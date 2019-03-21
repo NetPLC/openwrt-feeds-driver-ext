@@ -16,7 +16,7 @@ PKG_LICENSE:=GPLv2
 PKG_SOURCE_URL:=https://github.com/thirdyouth/rtl8723du.git
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_DATE:=2019-03-20
-PKG_SOURCE_VERSION:=d86217403aefdd3fddde90780d1b56e2e4d3b58d
+PKG_SOURCE_VERSION:=a094122491f7a2380f574908751676f27bed7cd9
 
 PKG_MAINTAINER:=Han Pengfei <pengphei@foxmail.com>
 PKG_BUILD_PARALLEL:=1
@@ -28,7 +28,7 @@ define KernelPackage/rtl8723du
   TITLE:=rtl8723du Support
   DEPENDS:=+kmod-mac80211
   FILES:=$(PKG_BUILD_DIR)/rtl8723du.ko
-  AUTOLOAD:=$(call AutoProbe,8723du)
+  AUTOLOAD:=$(call AutoProbe,rtl8723du)
   PROVIDES:=kmod-rtl8723du
 endef
 
