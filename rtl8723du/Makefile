@@ -9,14 +9,14 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=rtl8723du
-PKG_VERSION:=1.0.0
-PKG_RELEASE:=1
+PKG_VERSION:=1.0.1
+PKG_RELEASE:=2
 PKG_LICENSE:=GPLv2
 
 PKG_SOURCE_URL:=https://github.com/thirdyouth/rtl8723du.git
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_DATE:=2019-03-20
-PKG_SOURCE_VERSION:=d86217403aefdd3fddde90780d1b56e2e4d3b58d
+PKG_SOURCE_VERSION:=c64bf83db2be3b3fb18de9f28a7f665f272d5fe5
 
 PKG_MAINTAINER:=Han Pengfei <pengphei@foxmail.com>
 PKG_BUILD_PARALLEL:=1
@@ -65,8 +65,6 @@ MAKE_OPTS:= \
 	$(EXTRA_KCONFIG) \
 	PROJECT_DIR="$(PKG_BUILD_DIR)" \
 	NOSTDINC_FLAGS="$(NOSTDINC_FLAGS)"
-
-	
 
 define Build/Compile
 	+$(MAKE) $(PKG_JOBS) -C "$(LINUX_DIR)" \
