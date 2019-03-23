@@ -16,7 +16,7 @@ PKG_LICENSE:=GPLv2
 PKG_SOURCE_URL:=https://github.com/thirdyouth/rtl8723du.git
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_DATE:=2019-03-20
-PKG_SOURCE_VERSION:=a094122491f7a2380f574908751676f27bed7cd9
+PKG_SOURCE_VERSION:=d86217403aefdd3fddde90780d1b56e2e4d3b58d
 
 PKG_MAINTAINER:=Han Pengfei <pengphei@foxmail.com>
 PKG_BUILD_PARALLEL:=1
@@ -26,7 +26,7 @@ include $(INCLUDE_DIR)/package.mk
 define KernelPackage/rtl8723du
   SUBMENU:=Wireless Drivers
   TITLE:=rtl8723du Support
-  DEPENDS:=+kmod-mac80211
+  DEPENDS:=+kmod-cfg80211
   FILES:=$(PKG_BUILD_DIR)/rtl8723du.ko
   AUTOLOAD:=$(call AutoProbe,rtl8723du)
   PROVIDES:=kmod-rtl8723du
@@ -46,23 +46,27 @@ EXTRA_KCONFIG:=\
 EXTRA_CFLAGS:= \
 	$(patsubst CONFIG_%, -DCONFIG_%=1, $(patsubst %=m,%,$(filter %=m,$(EXTRA_KCONFIG)))) \
 	$(patsubst CONFIG_%, -DCONFIG_%=1, $(patsubst %=y,%,$(filter %=y,$(EXTRA_KCONFIG)))) \
-	-DRTW_USE_CFG80211_STA_EVENT
+	-DRTW_USE_CFG80211_STA_EVENT \
+	-DRTW_P2P_GROUP_INTERFACE=1
 
-NOSTDINC_FLAGS = \
-	-I$(PKG_BUILD_DIR)/include \
-	-I$(PKG_BUILD_DIR)/hal/phydm \
+ NOSTDINC_FLAGS = \
+ 	-I$(PKG_BUILD_DIR)/include \
+ 	-I$(PKG_BUILD_DIR)/hal/phydm \
 	-I$(STAGING_DIR)/usr/include/mac80211-backport/uapi \
 	-I$(STAGING_DIR)/usr/include/mac80211-backport \
 	-I$(STAGING_DIR)/usr/include/mac80211/uapi \
 	-I$(STAGING_DIR)/usr/include/mac80211 \
+	-include generated/autoconf.h \
 	-include backport/backport.h
 
 MAKE_OPTS:= \
 	$(KERNEL_MAKE_FLAGS) \
 	SUBDIRS="$(PKG_BUILD_DIR)" \
-	USER_EXTRA_CFLAGS="$(EXTRA_CFLAGS) $(NOSTDINC_FLAGS)" \
+	USER_EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 	$(EXTRA_KCONFIG) \
-	PROJECT_DIR="$(PKG_BUILD_DIR)"
+	PROJECT_DIR="$(PKG_BUILD_DIR)" \
+	INUXINCLUDE="$(NOSTDINC_FLAGS)"
+
 	
 
 define Build/Compile
