@@ -47,11 +47,10 @@ EXTRA_CFLAGS:= \
 	$(patsubst CONFIG_%, -DCONFIG_%=1, $(patsubst %=m,%,$(filter %=m,$(EXTRA_KCONFIG)))) \
 	$(patsubst CONFIG_%, -DCONFIG_%=1, $(patsubst %=y,%,$(filter %=y,$(EXTRA_KCONFIG)))) \
 	-DRTW_USE_CFG80211_STA_EVENT \
-	-DRTW_P2P_GROUP_INTERFACE=1
+ 	-I$(PKG_BUILD_DIR)/include \
+ 	-I$(PKG_BUILD_DIR)/hal/phydm
 
  NOSTDINC_FLAGS = \
- 	-I$(PKG_BUILD_DIR)/include \
- 	-I$(PKG_BUILD_DIR)/hal/phydm \
 	-I$(STAGING_DIR)/usr/include/mac80211-backport/uapi \
 	-I$(STAGING_DIR)/usr/include/mac80211-backport \
 	-I$(STAGING_DIR)/usr/include/mac80211/uapi \
@@ -65,7 +64,7 @@ MAKE_OPTS:= \
 	USER_EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 	$(EXTRA_KCONFIG) \
 	PROJECT_DIR="$(PKG_BUILD_DIR)" \
-	INUXINCLUDE="$(NOSTDINC_FLAGS)"
+	NOSTDINC_FLAGS="$(NOSTDINC_FLAGS)"
 
 	
 
