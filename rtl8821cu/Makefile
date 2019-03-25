@@ -9,14 +9,14 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=rtl8821cu
-PKG_VERSION:=1.0.0
-PKG_RELEASE:=1
+PKG_VERSION:=1.0.1
+PKG_RELEASE:=2
 PKG_LICENSE:=GPLv2
 
 PKG_SOURCE_URL:=https://github.com/thirdyouth/rtl8821cu.git
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_DATE:=2019-03-22
-PKG_SOURCE_VERSION:=f80aa1b52d665f2c32d4f5c7cfa15e6d7c6e8f02
+PKG_SOURCE_DATE:=2019-03-25
+PKG_SOURCE_VERSION:=eff942898ac6272bf2a61a07380d739abe0037cd
 
 PKG_MAINTAINER:=Han Pengfei <pengphei@foxmail.com>
 PKG_BUILD_PARALLEL:=1
@@ -46,11 +46,11 @@ EXTRA_KCONFIG:=\
 EXTRA_CFLAGS:= \
 	$(patsubst CONFIG_%, -DCONFIG_%=1, $(patsubst %=m,%,$(filter %=m,$(EXTRA_KCONFIG)))) \
 	$(patsubst CONFIG_%, -DCONFIG_%=1, $(patsubst %=y,%,$(filter %=y,$(EXTRA_KCONFIG)))) \
-	-DRTW_USE_CFG80211_STA_EVENT
+	-DRTW_USE_CFG80211_STA_EVENT \
+	-I$(PKG_BUILD_DIR)/include \
+	-I$(PKG_BUILD_DIR)/hal/phydm
 
 NOSTDINC_FLAGS = \
-	-I$(PKG_BUILD_DIR)/include \
-	-I$(PKG_BUILD_DIR)/hal/phydm \
 	-I$(STAGING_DIR)/usr/include/mac80211-backport/uapi \
 	-I$(STAGING_DIR)/usr/include/mac80211-backport \
 	-I$(STAGING_DIR)/usr/include/mac80211/uapi \
@@ -60,9 +60,10 @@ NOSTDINC_FLAGS = \
 MAKE_OPTS:= \
 	$(KERNEL_MAKE_FLAGS) \
 	SUBDIRS="$(PKG_BUILD_DIR)" \
-	USER_EXTRA_CFLAGS="$(EXTRA_CFLAGS) $(NOSTDINC_FLAGS)" \
+	USER_EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 	$(EXTRA_KCONFIG) \
-	PROJECT_DIR="$(PKG_BUILD_DIR)"
+	PROJECT_DIR="$(PKG_BUILD_DIR)" \
+	NOSTDINC_FLAGS="$(NOSTDINC_FLAGS)"
 	
 
 define Build/Compile
