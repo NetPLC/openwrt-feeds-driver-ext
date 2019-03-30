@@ -10,7 +10,7 @@ include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=rtl8723du
 PKG_VERSION:=1.0.1
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 PKG_LICENSE:=GPLv2
 
 PKG_SOURCE_URL:=https://github.com/thirdyouth/rtl8723du.git
@@ -26,7 +26,7 @@ include $(INCLUDE_DIR)/package.mk
 define KernelPackage/rtl8723du
   SUBMENU:=Wireless Drivers
   TITLE:=rtl8723du Support
-  DEPENDS:=+kmod-cfg80211
+  DEPENDS:=@USB_SUPPORT +kmod-cfg80211 +@DRIVER_WEXT_SUPPORT +@DRIVER_11N_SUPPORT +@DRIVER_11AC_SUPPORT
   FILES:=$(PKG_BUILD_DIR)/rtl8723du.ko
   AUTOLOAD:=$(call AutoProbe,rtl8723du)
   PROVIDES:=kmod-rtl8723du
@@ -39,7 +39,6 @@ endef
 EXTRA_KCONFIG:=\
 	CONFIG_RTL8723DU=m \
 	CONFIG_IOCTL_CFG80211=y \
-	CONFIG_CONCURRENT_MODE=y \
 	CONFIG_LITTLE_ENDIAN=y \
 	USER_MODULE_NAME=rtl8723du 
 
