@@ -28,7 +28,7 @@ define KernelPackage/rtk_btusb
   TITLE:=rtk USB Bluetooth Support
   DEPENDS:=+kmod-bluetooth
   FILES:=$(PKG_BUILD_DIR)/bluetooth_usb_driver/rtk_btusb.ko
-  AUTOLOAD:=$(call AutoProbe,rtk_btusb)
+  AUTOLOAD:=$(call AutoLoad,99,rtk_btusb)
   PROVIDES:=kmod-rtk_btusb
 endef
 
