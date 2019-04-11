@@ -36,6 +36,23 @@ define KernelPackage/rtl8723du/description
  Kernel module for rtl8723 wireless module.
 endef
 
+define Package/rtl8723du-firmware-default
+  SECTION:=firmware
+  CATEGORY:=Firmware
+  TITLE:=RTK $(1) firmware
+  DEPENDS:=+kmod-rtl8723du
+endef
+
+define Package/rtl8723du-btcoexist-firmware
+$(call Package/rtl8723du-firmware-default,8723du)
+endef
+
+define Package/rtl8723du-btcoexist-firmware/install
+	$(INSTALL_DIR) $(1)/lib/firmware/8723du
+	$(INSTALL_BIN) ./files/wifi_ant_isolation.txt $(1)/lib/firmware/8723du/
+endef
+
+
 EXTRA_KCONFIG:=\
 	CONFIG_RTL8723DU=m \
 	CONFIG_IOCTL_CFG80211=y \
@@ -73,3 +90,4 @@ define Build/Compile
 endef
 
 $(eval $(call KernelPackage,rtl8723du))
+$(eval $(call BuildPackage,rtl8723du-btcoexist-firmware))
