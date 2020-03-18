@@ -13,11 +13,6 @@ PKG_VERSION:=1.0.1
 PKG_RELEASE:=2
 PKG_LICENSE:=GPLv2
 
-PKG_SOURCE_URL:=https://github.com/thirdyouth/mt7610u.git
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_DATE:=2019-03-20
-PKG_SOURCE_VERSION:=78361370c98aefdc3631faa8a7abc7c970068d61
-
 PKG_MAINTAINER:=Han Pengfei <pengphei@foxmail.com>
 PKG_BUILD_PARALLEL:=1
 
@@ -26,7 +21,7 @@ include $(INCLUDE_DIR)/package.mk
 define KernelPackage/mt7610u
   SUBMENU:=Wireless Drivers
   TITLE:=mt7610u Support
-  DEPENDS:=+kmod-cfg80211
+  DEPENDS:=@USB_SUPPORT +kmod-cfg80211 +@DRIVER_WEXT_SUPPORT
   FILES:=$(PKG_BUILD_DIR)/os/linux/mt7610u_sta.ko
   AUTOLOAD:=$(call AutoProbe,mt7610u_sta)
   PROVIDES:=kmod-mt7610u
