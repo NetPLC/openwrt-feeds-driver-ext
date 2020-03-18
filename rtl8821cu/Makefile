@@ -13,11 +13,6 @@ PKG_VERSION:=1.0.1
 PKG_RELEASE:=2
 PKG_LICENSE:=GPLv2
 
-PKG_SOURCE_URL:=https://github.com/thirdyouth/rtl8821cu.git
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_DATE:=2019-03-25
-PKG_SOURCE_VERSION:=eff942898ac6272bf2a61a07380d739abe0037cd
-
 PKG_MAINTAINER:=Han Pengfei <pengphei@foxmail.com>
 PKG_BUILD_PARALLEL:=1
 
@@ -26,7 +21,7 @@ include $(INCLUDE_DIR)/package.mk
 define KernelPackage/rtl8821cu
   SUBMENU:=Wireless Drivers
   TITLE:=rtl8821cu Support
-  DEPENDS:=+kmod-mac80211
+  DEPENDS:=@USB_SUPPORT +kmod-cfg80211 +@DRIVER_WEXT_SUPPORT +@DRIVER_11N_SUPPORT +@DRIVER_11AC_SUPPORT
   FILES:=$(PKG_BUILD_DIR)/rtl8821cu.ko
   AUTOLOAD:=$(call AutoProbe,rtl8821cu)
   PROVIDES:=kmod-
@@ -55,6 +50,7 @@ NOSTDINC_FLAGS = \
 	-I$(STAGING_DIR)/usr/include/mac80211-backport \
 	-I$(STAGING_DIR)/usr/include/mac80211/uapi \
 	-I$(STAGING_DIR)/usr/include/mac80211 \
+	-include generated/autoconf.h \
 	-include backport/backport.h
 
 MAKE_OPTS:= \
