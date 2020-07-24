@@ -15,6 +15,7 @@ PKG_LICENSE:=GPLv2
 
 PKG_MAINTAINER:=Han Pengfei <pengphei@foxmail.com>
 PKG_BUILD_PARALLEL:=1
+PKG_BUILD_DIR:=$(KERNEL_BUILD_DIR)/rtl8821cu-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -53,17 +54,22 @@ NOSTDINC_FLAGS = \
 	-include generated/autoconf.h \
 	-include backport/backport.h
 
+FILTERED_KERNEL_MAKE_FLAGS=$(filter-out KERNELRELEASE=$(LINUX_VERSION),$(KERNEL_MAKE_FLAGS))
+
 MAKE_OPTS:= \
-	$(KERNEL_MAKE_FLAGS) \
+	$(FILTERED_KERNEL_MAKE_FLAGS) \
 	SUBDIRS="$(PKG_BUILD_DIR)" \
 	USER_EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 	$(EXTRA_KCONFIG) \
 	PROJECT_DIR="$(PKG_BUILD_DIR)" \
 	NOSTDINC_FLAGS="$(NOSTDINC_FLAGS)"
 	
+define Build/Configure
+	$(info Launching build of Kernel Module)
+endef
 
 define Build/Compile
-	+$(MAKE) $(PKG_JOBS) -C "$(LINUX_DIR)" \
+	+$(MAKE) $(PKG_JOBS) -C "$(PKG_BUILD_DIR)" src="$(PKG_BUILD_DIR)" KSRC="$(LINUX_DIR)" \
 		$(MAKE_OPTS) \
 		modules
 endef
