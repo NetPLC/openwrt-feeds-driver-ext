@@ -24,7 +24,7 @@ define KernelPackage/rtl8821cu
   DEPENDS:=@USB_SUPPORT +kmod-cfg80211 +@DRIVER_WEXT_SUPPORT +@DRIVER_11N_SUPPORT +@DRIVER_11AC_SUPPORT
   FILES:=$(PKG_BUILD_DIR)/rtl8821cu.ko
   AUTOLOAD:=$(call AutoProbe,rtl8821cu)
-  PROVIDES:=kmod-
+  PROVIDES:=kmod-rtl8821cu
 endef
 
 define KernelPackage/rtl8821cu/description
