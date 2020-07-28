@@ -42,8 +42,6 @@ EXTRA_CFLAGS:= \
 	$(patsubst CONFIG_%, -DCONFIG_%=1, $(patsubst %=m,%,$(filter %=m,$(EXTRA_KCONFIG)))) \
 	$(patsubst CONFIG_%, -DCONFIG_%=1, $(patsubst %=y,%,$(filter %=y,$(EXTRA_KCONFIG)))) \
 	-DRTW_USE_CFG80211_STA_EVENT \
-	-DRTW_VENDOR_EXT_SUPPORT \
-	-DRTW_ENABLE_WIFI_CONTROL_FUNC \
 	-I$(PKG_BUILD_DIR)/include \
 	-I$(PKG_BUILD_DIR)/hal/phydm
 
