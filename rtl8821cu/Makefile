@@ -42,6 +42,8 @@ EXTRA_CFLAGS:= \
 	$(patsubst CONFIG_%, -DCONFIG_%=1, $(patsubst %=m,%,$(filter %=m,$(EXTRA_KCONFIG)))) \
 	$(patsubst CONFIG_%, -DCONFIG_%=1, $(patsubst %=y,%,$(filter %=y,$(EXTRA_KCONFIG)))) \
 	-DRTW_USE_CFG80211_STA_EVENT \
+	-DRTW_VENDOR_EXT_SUPPORT \
+	-DRTW_ENABLE_WIFI_CONTROL_FUNC \
 	-I$(PKG_BUILD_DIR)/include \
 	-I$(PKG_BUILD_DIR)/hal/phydm
 
@@ -61,10 +63,12 @@ MAKE_OPTS:= \
 	USER_EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 	$(EXTRA_KCONFIG) \
 	PROJECT_DIR="$(PKG_BUILD_DIR)" \
+	src="$(PKG_BUILD_DIR)" \
+	KSRC="$(LINUX_DIR)" \
 	NOSTDINC_FLAGS="$(NOSTDINC_FLAGS)"
 	
 define Build/Compile
-	+$(MAKE) $(PKG_JOBS) -C "$(PKG_BUILD_DIR)" src="$(PKG_BUILD_DIR)" KSRC="$(LINUX_DIR)" \
+	+$(MAKE) $(PKG_JOBS) -C "$(PKG_BUILD_DIR)" \
 		$(MAKE_OPTS) \
 		modules
 endef
