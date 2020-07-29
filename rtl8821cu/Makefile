@@ -24,7 +24,7 @@ define KernelPackage/rtl8821cu
   DEPENDS:=@USB_SUPPORT +kmod-cfg80211 +@DRIVER_WEXT_SUPPORT +@DRIVER_11N_SUPPORT +@DRIVER_11AC_SUPPORT
   FILES:=$(PKG_BUILD_DIR)/rtl8821cu.ko
   AUTOLOAD:=$(call AutoProbe,rtl8821cu)
-  PROVIDES:=kmod-
+  PROVIDES:=kmod-rtl8821cu
 endef
 
 define KernelPackage/rtl8821cu/description
@@ -53,17 +53,20 @@ NOSTDINC_FLAGS = \
 	-include generated/autoconf.h \
 	-include backport/backport.h
 
+FILTERED_KERNEL_MAKE_FLAGS=$(filter-out KERNELRELEASE=$(LINUX_VERSION),$(KERNEL_MAKE_FLAGS))
+
 MAKE_OPTS:= \
-	$(KERNEL_MAKE_FLAGS) \
+	$(FILTERED_KERNEL_MAKE_FLAGS) \
 	SUBDIRS="$(PKG_BUILD_DIR)" \
 	USER_EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 	$(EXTRA_KCONFIG) \
 	PROJECT_DIR="$(PKG_BUILD_DIR)" \
+	src="$(PKG_BUILD_DIR)" \
+	KSRC="$(LINUX_DIR)" \
 	NOSTDINC_FLAGS="$(NOSTDINC_FLAGS)"
 	
-
 define Build/Compile
-	+$(MAKE) $(PKG_JOBS) -C "$(LINUX_DIR)" \
+	+$(MAKE) $(PKG_JOBS) -C "$(PKG_BUILD_DIR)" \
 		$(MAKE_OPTS) \
 		modules
 endef
